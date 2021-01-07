@@ -72,7 +72,7 @@ const scoreChecker = async (indexOfUser, indexOfExam, submittedAnswers) => {
       score += 1;
     }
   }
-  return score;
+  return score.toString();
 };
 
 router.get("/questions", async (req, res, next) => {
@@ -81,7 +81,7 @@ router.get("/questions", async (req, res, next) => {
       const questions = await readFileHandler("questions.json");
       res.send(questions);
     } else {
-      next(req.query.id, "You are not authorised to access this information");
+      next(errorMessage(req.query.id, "You are not authorised to access this information"));
     }
   } catch (error) {
     console.log(error);
@@ -210,7 +210,7 @@ router.post("/:examId/submit", async (req, res, next) => {
             users[indexOfUser].exams[indexOfExam].isCompleted = true;
             users[indexOfUser].exams[indexOfExam].score = score;
             writeFileHandler("users.json", users);
-            res.send(score.toString());
+            res.send(score);
           } else {
             next(errorMessage(req.body, "User has not completed all questions."));
           }

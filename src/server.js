@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const examsRoutes = require("./exams");
+const questionsRoutes = require("./questions");
 const listEndpoints = require("express-list-endpoints");
 const {
   notFoundHandler,
@@ -24,6 +25,7 @@ server.use(express.json());
 server.use(loggerMiddleware);
 
 server.use("/exams", examsRoutes);
+server.use("/questions", questionsRoutes);
 
 server.use(notFoundHandler);
 server.use(unauthorizedHandler);

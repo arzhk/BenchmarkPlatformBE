@@ -154,9 +154,17 @@ router.post("/:examId/start", async (req, res, next) => {
               users[indexOfUser].exams[indexOfExam].questions = questions;
 
               writeFileHandler("users.json", users);
-              res.send(users[indexOfUser].exams[indexOfExam].questions);
+              let questionsWithoutAnswers = [...users[indexOfUser].exams[indexOfExam].questions];
+              questionsWithoutAnswers.forEach((question) =>
+                question.answers.forEach((answer) => delete answer.isCorrect)
+              );
+              res.send(questionsWithoutAnswers);
             } else {
-              res.send(users[indexOfUser].exams[indexOfExam].questions);
+              let questionsWithoutAnswers = [...users[indexOfUser].exams[indexOfExam].questions];
+              questionsWithoutAnswers.forEach((question) =>
+                question.answers.forEach((answer) => delete answer.isCorrect)
+              );
+              res.send(questionsWithoutAnswers);
             }
           } else {
             res.send(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));

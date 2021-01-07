@@ -8,7 +8,7 @@
       {
         "_examId": 123,
         "examName": "admission test",
-        "isCompleted": false,
+        "isCompleted": true,
         "examDuration": 60,
         "questions": [
           {
@@ -62,7 +62,8 @@
               { "text": "ex", "isCorrect": false }
             ]
           }
-        ]
+        ],
+        "score": 4
       }
     ]
   }

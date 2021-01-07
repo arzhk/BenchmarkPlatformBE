@@ -64,6 +64,19 @@ const questionGenerator = async (numberOfQuestions) => {
   return selectedQuestions;
 };
 
+const scoreChecker = async (indexOfUser, indexOfExam, submittedAnswers) => {
+  let users = await readFileHandler("users.json");
+  let score = 0;
+  let answerIndex = 0;
+  console.log(submittedAnswers);
+  for (let i = 0; i < submittedAnswers.length; i++) {
+    if (users[indexOfUser].exams[indexOfExam].questions[i].answers[submittedAnswers[i]].isCorrect) {
+      score += 1;
+    }
+  }
+  return score;
+};
+
 router.get("/questions", async (req, res, next) => {
   try {
     if (req.query.id === "123") {
@@ -169,17 +182,44 @@ router.post("/:examId/start", async (req, res, next) => {
               res.send(users[indexOfUser].exams[indexOfExam]);
             }
           } else {
-            res.send(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));
+            res.status(400).send(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));
           }
-          res.send("aaa");
         } else {
-          res.send(errorMessage(req.query.userID, "User with that ID not found"));
+          res.status(400).send(errorMessage(req.query.userID, "User with that ID not found"));
         }
       } else {
-        res.send(errorMessage("", "userID is missing", "?userID="));
+        res.status(400).send(errorMessage("", "userID is missing", "?userID="));
       }
     } else {
-      res.send("Exam with that ID not found");
+      res.status(400).send("Exam with that ID not found");
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.post("/:examId/submit", async (req, res, next) => {
+  try {
+    if (req.query.userID) {
+      let users = await readFileHandler("users.json");
+      const indexOfUser = users.findIndex((user) => user._id === req.query.userID);
+      const indexOfExam = users[indexOfUser].exams.findIndex((exam) => exam._examId == req.params.examId);
+      if (users[indexOfUser].exams[indexOfExam].isCompleted === false) {
+        if (req.body.answers.length === users[indexOfUser].exams[indexOfExam].questions.length) {
+          const score = await scoreChecker(indexOfUser, indexOfExam, req.body.answers);
+          users[indexOfUser].exams[indexOfExam].isCompleted = true;
+          users[indexOfUser].exams[indexOfExam].score = score;
+          writeFileHandler("users.json", users);
+          res.send(score.toString());
+        } else {
+          next(errorMessage(req.body, "User has not completed all questions."));
+        }
+      } else {
+        next(errorMessage(req.query.userID, "User has already completed this exam."));
+      }
+    } else {
+      next(errorMessage("", "userID is missing", "?userID="));
     }
   } catch (error) {
     console.log(error);

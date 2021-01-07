@@ -132,6 +132,7 @@ router.post(
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
+      console.log(req.body);
       if (!errors.isEmpty()) {
         const err = new Error();
         err.message = errors;

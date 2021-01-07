@@ -1,6 +1,6 @@
 # M5-D13 Benchmark Platform API
 
-# ROUTES
+## ROUTES
 
 ### Exams Main
 

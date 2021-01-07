@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "8d0rgo25c4kjmnx02m",
+    "candidateFirstName": "Aaron",
+    "candidateSurname": "Test",
+    "password": "happy",
+    "exams": [
+      { "_examId": 123, "examName": "admission test", "isCompleted": false, "examDuration": 60, "questions": [] }
+    ]
+  }
+]

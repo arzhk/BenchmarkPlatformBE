@@ -48,6 +48,22 @@ const errorMessage = (value, message, param = "_id", url = "url") => {
   return err;
 };
 
+const questionGenerator = async (numberOfQuestions) => {
+  let questions = await readFileHandler("questions.json");
+  let randomIndexes = [];
+  let selectedQuestions = [];
+
+  while (randomIndexes.length < numberOfQuestions) {
+    randomIndexes.push(Math.floor(Math.random() * questions.length));
+    randomIndexes = [...new Set(randomIndexes)];
+  }
+
+  for (let i = 0; i < randomIndexes.length; i++) {
+    selectedQuestions.push(questions[randomIndexes[i]]);
+  }
+  return selectedQuestions;
+};
+
 router.get("/questions", async (req, res, next) => {
   try {
     if (req.query.id === "123") {
@@ -133,20 +149,15 @@ router.post("/:examId/start", async (req, res, next) => {
         const indexOfExam = users[indexOfUser].exams.findIndex((exam) => exam._examId == req.params.examId);
         if (indexOfUser !== -1) {
           if (users[indexOfUser].exams[indexOfExam].isCompleted !== true) {
-            let questions = await readFileHandler("questions.json");
-            let randomIndexes = [];
-            console.log(questions.length);
+            if (users[indexOfUser].exams[indexOfExam].questions.length === 0) {
+              const questions = await questionGenerator(5);
+              users[indexOfUser].exams[indexOfExam].questions = questions;
 
-            while (randomIndexes.length < 5) {
-              randomIndexes.push(Math.floor(Math.random() * questions.length));
-              randomIndexes = [...new Set(randomIndexes)];
+              writeFileHandler("users.json", users);
+              res.send(users[indexOfUser].exams[indexOfExam].questions);
+            } else {
+              res.send(users[indexOfUser].exams[indexOfExam].questions);
             }
-
-            for (let i = 0; i < randomIndexes.length; i++) {
-              users[indexOfUser].exams[indexOfExam].questions.push(questions[randomIndexes[i]]);
-            }
-
-            res.send(users[indexOfUser].exams[indexOfExam].questions);
           } else {
             res.send(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));
           }

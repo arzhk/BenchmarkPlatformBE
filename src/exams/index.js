@@ -67,8 +67,6 @@ const questionGenerator = async (numberOfQuestions) => {
 const scoreChecker = async (indexOfUser, indexOfExam, submittedAnswers) => {
   let users = await readFileHandler("users.json");
   let score = 0;
-  let answerIndex = 0;
-  console.log(submittedAnswers);
   for (let i = 0; i < submittedAnswers.length; i++) {
     if (users[indexOfUser].exams[indexOfExam].questions[i].answers[submittedAnswers[i]].isCorrect) {
       score += 1;
@@ -83,7 +81,7 @@ router.get("/questions", async (req, res, next) => {
       const questions = await readFileHandler("questions.json");
       res.send(questions);
     } else {
-      res.send("You are not authorised to access this information");
+      next(req.query.id, "You are not authorised to access this information");
     }
   } catch (error) {
     console.log(error);
@@ -99,7 +97,7 @@ router.get("/user/:id", async (req, res, next) => {
       if (indexOfUser !== -1) {
         res.send(users[indexOfUser]);
       } else {
-        res.send(errorMessage(req.params.id, "User with that ID not found"));
+        next(errorMessage(req.params.id, "User with that ID not found"));
       }
     } else {
       let error = new Error();
@@ -182,16 +180,16 @@ router.post("/:examId/start", async (req, res, next) => {
               res.send(users[indexOfUser].exams[indexOfExam]);
             }
           } else {
-            res.status(400).send(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));
+            next(errorMessage(req.params.examId, "User has already completed this exam", "?userID="));
           }
         } else {
-          res.status(400).send(errorMessage(req.query.userID, "User with that ID not found"));
+          next(errorMessage(req.query.userID, "User with that ID not found"));
         }
       } else {
-        res.status(400).send(errorMessage("", "userID is missing", "?userID="));
+        next(errorMessage("", "userID is missing", "?userID="));
       }
     } else {
-      res.status(400).send("Exam with that ID not found");
+      next(errorMessage(req.params.examId, "Exam with that ID not found", "examId"));
     }
   } catch (error) {
     console.log(error);
@@ -205,18 +203,22 @@ router.post("/:examId/submit", async (req, res, next) => {
       let users = await readFileHandler("users.json");
       const indexOfUser = users.findIndex((user) => user._id === req.query.userID);
       const indexOfExam = users[indexOfUser].exams.findIndex((exam) => exam._examId == req.params.examId);
-      if (users[indexOfUser].exams[indexOfExam].isCompleted === false) {
-        if (req.body.answers.length === users[indexOfUser].exams[indexOfExam].questions.length) {
-          const score = await scoreChecker(indexOfUser, indexOfExam, req.body.answers);
-          users[indexOfUser].exams[indexOfExam].isCompleted = true;
-          users[indexOfUser].exams[indexOfExam].score = score;
-          writeFileHandler("users.json", users);
-          res.send(score.toString());
+      if (indexOfExam !== -1) {
+        if (users[indexOfUser].exams[indexOfExam].isCompleted === false) {
+          if (req.body.answers.length === users[indexOfUser].exams[indexOfExam].questions.length) {
+            const score = await scoreChecker(indexOfUser, indexOfExam, req.body.answers);
+            users[indexOfUser].exams[indexOfExam].isCompleted = true;
+            users[indexOfUser].exams[indexOfExam].score = score;
+            writeFileHandler("users.json", users);
+            res.send(score.toString());
+          } else {
+            next(errorMessage(req.body, "User has not completed all questions."));
+          }
         } else {
-          next(errorMessage(req.body, "User has not completed all questions."));
+          next(errorMessage(req.query.userID, "User has already completed this exam."));
         }
       } else {
-        next(errorMessage(req.query.userID, "User has already completed this exam."));
+        next(errorMessage(req.params.examId, "Exam with that ID does not exist.", "_examId"));
       }
     } else {
       next(errorMessage("", "userID is missing", "?userID="));

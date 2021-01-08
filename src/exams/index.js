@@ -198,12 +198,14 @@ router.post("/:examId/start", async (req, res, next) => {
   }
 });
 
-router.post("/:examId/submit", async (req, res, next) => {
+router.post("/:userID/:examId/submit", async (req, res, next) => {
   try {
-    if (req.query.userID) {
+    if (req.params.userID) {
       let users = await readFileHandler("users.json");
-      const indexOfUser = users.findIndex((user) => user._id === req.query.userID);
+      const indexOfUser = users.findIndex((user) => user._id === req.params.userID);
       const indexOfExam = users[indexOfUser].exams.findIndex((exam) => exam._examId == req.params.examId);
+      console.log(indexOfUser);
+      console.log(indexOfExam);
       if (indexOfExam !== -1) {
         if (users[indexOfUser].exams[indexOfExam].isCompleted === false) {
           if (req.body.answers.length === users[indexOfUser].exams[indexOfExam].questions.length) {
@@ -216,13 +218,13 @@ router.post("/:examId/submit", async (req, res, next) => {
             next(errorMessage(req.body, "User has not completed all questions."));
           }
         } else {
-          next(errorMessage(req.query.userID, "User has already completed this exam."));
+          next(errorMessage(req.params.userID, "User has already completed this exam."));
         }
       } else {
         next(errorMessage(req.params.examId, "Exam with that ID does not exist.", "_examId"));
       }
     } else {
-      next(errorMessage("", "userID is missing", "?userID="));
+      next(errorMessage("", "userID is missing", "userID"));
     }
   } catch (error) {
     console.log(error);

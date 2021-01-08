@@ -66,5 +66,17 @@
         "score": 4
       }
     ]
+  },
+  {
+    "_id": "8d0rgobrokjndegml",
+    "candidateFirstName": "admin",
+    "candidateSurname": "admin",
+    "password": "password123",
+    "exams": [
+      { "_examId": 123, "examName": "admission test", "isCompleted": false, "examDuration": 60, "questions": [] },
+      { "_examId": 234, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] },
+      { "_examId": 345, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] },
+      { "_examId": 456, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] }
+    ]
   }
 ]

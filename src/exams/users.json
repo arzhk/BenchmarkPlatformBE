@@ -8,7 +8,7 @@
       {
         "_examId": 123,
         "examName": "admission test",
-        "isCompleted": false,
+        "isCompleted": true,
         "examDuration": 60,
         "questions": [
           {
@@ -63,11 +63,81 @@
               { "text": "nisi", "isCorrect": false }
             ]
           }
-        ]
+        ],
+        "score": "3"
       },
       { "_examId": 234, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] },
       { "_examId": 345, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] },
       { "_examId": 456, "examName": "placeholder", "isCompleted": false, "examDuration": 60, "questions": [] }
+    ]
+  },
+  {
+    "_id": "8d0rgo24fokjohr6el",
+    "candidateFirstName": "test",
+    "candidateSurname": "account",
+    "password": "password123",
+    "exams": [
+      {
+        "_examId": 123,
+        "examName": "admission test",
+        "isCompleted": false,
+        "examDuration": 60,
+        "questions": [
+          {
+            "duration": 30,
+            "text": "Cupidatat excepteur sit non id veniam ad do exercitation aute ipsum eu. Fugiat amet ut irure ut nisi ut ad esse sunt. Id tempor quis esse nisi nulla sint aliqua esse eiusmod commodo incididunt aliquip sit.",
+            "answers": [
+              { "text": "proident", "isCorrect": false },
+              { "text": "adipisicing", "isCorrect": true },
+              { "text": "non", "isCorrect": false },
+              { "text": "ex", "isCorrect": false }
+            ]
+          },
+          {
+            "duration": 30,
+            "text": "Ullamco anim magna adipisicing ex proident anim nulla duis nostrud Lorem exercitation occaecat. Nulla fugiat est exercitation labore minim id. Ullamco in et laborum sunt exercitation aliquip ut reprehenderit elit Lorem do est incididunt magna. Veniam incididunt velit quis veniam velit proident laborum cupidatat aliquip. Ut consectetur laboris culpa incididunt ad qui. Laboris excepteur officia proident ea proident non ea incididunt elit velit.",
+            "img": "https://demo-res.cloudinary.com/image/upload/sample.jpg",
+            "answers": [
+              { "text": "et", "isCorrect": false },
+              { "text": "et", "isCorrect": true },
+              { "text": "eu", "isCorrect": false },
+              { "text": "nisi", "isCorrect": false }
+            ]
+          },
+          {
+            "duration": 30,
+            "text": "Cupidatat dolor dolore anim non. Proident veniam mollit culpa ullamco proident ea pariatur amet ipsum. Sint ex eiusmod sit anim nostrud irure et et reprehenderit occaecat deserunt labore velit. Velit commodo magna tempor tempor cillum amet excepteur. Culpa incididunt est nulla sint. Dolore Lorem sunt deserunt tempor adipisicing cillum cupidatat commodo enim nulla.",
+            "img": "https://demo-res.cloudinary.com/image/upload/sample.jpg",
+            "answers": [
+              { "text": "ea", "isCorrect": false },
+              { "text": "Lorem", "isCorrect": true },
+              { "text": "adipisicing", "isCorrect": false },
+              { "text": "proident", "isCorrect": false }
+            ]
+          },
+          {
+            "duration": 30,
+            "text": "Non cupidatat enim voluptate cupidatat est ea officia ad do adipisicing fugiat. Consectetur sit cillum veniam ad tempor ea ipsum irure anim proident voluptate nulla ipsum qui. Magna velit labore id ad magna aute ad nulla veniam occaecat reprehenderit pariatur. Consequat velit occaecat culpa esse consectetur ad officia tempor est eiusmod cupidatat aute ut consequat. Amet labore do nisi nulla aliquip non amet excepteur minim culpa officia ex enim.",
+            "img": "https://demo-res.cloudinary.com/image/upload/sample.jpg",
+            "answers": [
+              { "text": "laborum", "isCorrect": false },
+              { "text": "sit", "isCorrect": true },
+              { "text": "fugiat", "isCorrect": false },
+              { "text": "sit", "isCorrect": false }
+            ]
+          },
+          {
+            "duration": 30,
+            "text": "Ut dolore ut amet velit laborum sunt exercitation velit et excepteur est. Ad ullamco velit officia nulla esse proident sint labore et. Id reprehenderit eu laboris cupidatat aute est do occaecat. Nulla pariatur aute culpa ullamco velit ullamco id ea voluptate enim in in pariatur.",
+            "answers": [
+              { "text": "excepteur", "isCorrect": false },
+              { "text": "et", "isCorrect": true },
+              { "text": "sunt", "isCorrect": false },
+              { "text": "mollit", "isCorrect": false }
+            ]
+          }
+        ]
+      }
     ]
   }
 ]
